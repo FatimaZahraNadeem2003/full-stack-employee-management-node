@@ -50,7 +50,7 @@ export const HandleEmplyoeeSignup = async (req, res) => {
             // const VerificationEmailStatus = await SendVerificationEmail(email, verificationcode)
             // SendVerificationEmailStatus: VerificationEmailStatus
 
-            return res.status(201).json({ success: true, message: "Employee Registered Successfully", newEmployee: newEmployee.email, type: "EmployeeCreate" })
+            return res.status(201).json({ success: true, message: "Employee Registered Successfully", newEmployee: newEmployee.email, employeeID: newEmployee._id, type: "EmployeeCreate" })
 
         } catch (error) {
             res.status(400).json({ success: false, message: "Oops! Something went wrong", error: error });
@@ -173,7 +173,7 @@ export const HandleEmplyoeeForgotPassword = async (req, res) => {
         }
 
         const resetToken = crypto.randomBytes(25).toString('hex')
-        const resetTokenExpires = Date.now() + 1000 * 60 * 60 // 1 hour
+        const resetTokenExpires = Date.now() + 1000 * 60 * 60 
 
         employee.resetpasswordtoken = resetToken;
         employee.resetpasswordexpires = resetTokenExpires;
