@@ -156,7 +156,7 @@ export const HandleHRLogin = async (req, res) => {
         GenerateJwtTokenAndSetCookiesHR(res, HR._id, HR.role, HR.organizationID)
         HR.lastlogin = new Date()
         await HR.save()
-        return res.status(200).json({ success: true, message: "HR Login Successfull", type: "HRLogin" })
+        return res.status(200).json({ success: true, message: "HR Login Successfull", type: "HRLogin", HRID: HR._id })
     }
     catch (error) {
         return res.status(500).json({ success: false, message: "Internal Server Error", error: error, type: "HRLogin" })
@@ -184,7 +184,7 @@ export const HandleHRCheck = async (req, res) => {
             await HR.save();
         }
         
-        return res.status(200).json({ success: true, message: "HR Already Logged In", type: "checkHR" })
+        return res.status(200).json({ success: true, message: "HR Already Logged In", type: "checkHR", HRID: HR._id })
     } catch (error) {
         return res.status(500).json({ success: false, error: error, message: "internal error", type: "checkHR" })
     }
