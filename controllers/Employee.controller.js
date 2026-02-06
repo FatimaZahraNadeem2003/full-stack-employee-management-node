@@ -53,9 +53,7 @@ export const HandleEmployeeByEmployee = async (req, res) => {
 
 export const HandleEmployeeUpdate = async (req, res) => {
     try {
-        // Get employee ID from request (either from token for self-update or from body for admin update)
-        const employeeId = req.body.employeeId || req.EMid;
-        const updatedEmployee = req.body;
+        const { employeeId, updatedEmployee } = req.body
 
         const checkeemployee = await Employee.findById(employeeId)
 
@@ -63,13 +61,8 @@ export const HandleEmployeeUpdate = async (req, res) => {
             return res.status(404).json({ success: false, message: "employee not found" })
         }
 
-        // Remove sensitive fields and restricted fields from update
-        const { password, department, role, ...updateData } = updatedEmployee;
-        
-        const employee = await Employee.findByIdAndUpdate(employeeId, updateData, { new: true })
-            .select("firstname lastname email contactnumber department role joiningdate isverified");
-        
-        return res.status(200).json({ success: true, message: "Employee profile updated successfully", data: employee })
+        const employee = await Employee.findByIdAndUpdate(employeeId, updatedEmployee, { new: true }).select("firstname lastname email contactnumber department")
+        return res.status(200).json({ success: true, data: employee })
 
     } catch (error) {
         return res.status(500).json({ success: false, error: error, message: "internal server error" })
